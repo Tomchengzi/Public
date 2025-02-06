@@ -1,109 +1,605 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <title>Happy Birthday</title>
+<style>
+        :root {
+            --primary: #FF3366;
+            --secondary: #6C63FF;
+            --background: #1A1A2E;
+            --text: #FFFFFF;
+            --accent: #FFD700;
+        }
 
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>学生成绩查询</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                max-width: 500px;
-                margin: 0 auto;
-                padding: 20px;
-                background-color: #f5f5f5;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--background);
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            perspective: 1000px;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .birthday-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2;
+            transition: all 0.5s ease;
+            cursor: pointer;
+            padding: 2em;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
+                        0 0 20px rgba(255, 51, 102, 0.3),
+                        0 0 40px rgba(108, 99, 255, 0.2);
+            transform-style: preserve-3d;
+            animation: cardFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% {
+                transform: translate(-50%, -50%) translateY(0px);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
+                            0 0 20px rgba(255, 51, 102, 0.3),
+                            0 0 40px rgba(108, 99, 255, 0.2);
             }
-            .container {
-                text-align: center;
-                background-color: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            50% {
+                transform: translate(-50%, -50%) translateY(-20px);
+                box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2),
+                            0 0 30px rgba(255, 51, 102, 0.4),
+                            0 0 50px rgba(108, 99, 255, 0.3);
             }
-            input, button {
-                margin: 10px;
-                padding: 8px;
-                font-size: 16px;
-                border-radius: 5px;
+        }
+
+        .title {
+            font-size: 4.5em;
+            font-weight: 700;
+            margin-bottom: 0.5em;
+            opacity: 1;
+            transform: none;
+            animation: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3),
+                         0 0 20px rgba(255, 51, 102, 0.5),
+                         0 0 40px rgba(108, 99, 255, 0.3);
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .name {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #FF3366, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1em;
+            opacity: 1;
+            transform: none;
+            animation: none;
+            position: relative;
+            display: inline-block;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .message {
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 1;
+            padding: 1em;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            white-space: pre-line;
+            min-height: 3em;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .play-button,
+        .birthday-wishes {
+            display: none;
+        }
+
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0;
+            border-radius: 50%;
+            animation: float 4s ease-in-out infinite;
+            transition: transform 0.3s ease;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
             }
-            input {
-                border: 1px solid #ddd;
-                width: 200px;
+            50% {
+                transform: translateY(-20px) rotate(180deg);
             }
-            button {
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                cursor: pointer;
+        }
+
+        .gradient-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center,
+                rgba(26, 26, 46, 0.8) 0%,
+                rgba(108, 99, 255, 0.2) 50%,
+                rgba(255, 51, 102, 0.2) 100%
+            );
+            opacity: 0.1;
+            z-index: 0;
+            transition: all 0.5s ease;
+            animation: gradientMove 15s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .emoji-rain {
+            position: fixed;
+            top: -20px;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall 3s linear forwards;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px);
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .click-effect {
+            position: fixed;
+            pointer-events: none;
+            border-radius: 50%;
+            animation: clickRipple 0.5s linear forwards;
+        }
+
+        @keyframes clickRipple {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 0.5;
+            }
+            100% {
                 width: 100px;
+                height: 100px;
+                opacity: 0;
             }
-            button:hover {
-                background-color: #45a049;
-            }
-            #result {
-                margin-top: 20px;
-                font-size: 18px;
-                line-height: 1.6;
-                padding: 10px;
-            }
-            .result-box {
-                background-color: #e8f5e9;
-                padding: 15px;
-                border-radius: 5px;
-                margin-top: 15px;
-                text-align: left;
-            }
-            .result-box p {
-                margin: 5px 0;
-            }
-            .error-message {
-                color: red;
-                padding: 10px;
-                background-color: #ffebee;
-                border-radius: 5px;
-                margin-top: 15px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h2>学生成绩查询系统</h2>
-            <input type="text" id="nameInput" placeholder="请输入学生姓名">
-            <button onclick="checkScore()">查询</button>
-            <div id="result"></div>
-        </div>
-        
-        <script>
-            const studentsData = {"丘锦彤": {"总分": 100.0}, "莫晓红": {"总分": 100.0}, "陈智丽": {"总分": 99.0}, "郭泽超": {"总分": 99.0}, "曾小忆": {"总分": 98.5}, "陈思静": {"总分": 98.0}, "邓伊文": {"总分": 98.0}, "张晓君": {"总分": 98.0}, "杨丽梅": {"总分": 98.0}, "吴敏": {"总分": 98.0}, "周仁忠": {"总分": 98.0}, "纪佩文": {"总分": 98.0}, "钟欣妍": {"总分": 98.0}, "赖静茹": {"总分": 97.5}, "彭洪辉": {"总分": 97.0}, "陈慧雪": {"总分": 97.0}, "曾美燕": {"总分": 97.0}, "周浩臻": {"总分": 97.0}, "欧凯杰": {"总分": 97.0}, "邓小环": {"总分": 97.0}, "张佳娜": {"总分": 97.0}, "李国樑": {"总分": 97.0}, "陈光连": {"总分": 97.0}, "覃诗婷": {"总分": 97.0}, "陈冰": {"总分": 97.0}, "曾小冰": {"总分": 96.5}, "戴映怡": {"总分": 96.5}, "钟淑岚": {"总分": 96.5}, "郑晴月": {"总分": 96.5}, "刘丽珊": {"总分": 96.0}, "林思怡": {"总分": 96.0}, "吴宇莹": {"总分": 96.0}, "李德昌": {"总分": 96.0}, "黄梓蜀": {"总分": 96.0}, "张婷婷": {"总分": 95.5}, "胡志楷": {"总分": 95.5}, "李金燕": {"总分": 95.5}, "苏冰丽": {"总分": 95.0}, "谢奕淳": {"总分": 95.0}, "陈晓彤": {"总分": 95.0}, "钟海滢": {"总分": 95.0}, "苏培雄": {"总分": 95.0}, "黄美琦": {"总分": 95.0}, "许伟炫": {"总分": 95.0}, "邹婉仪": {"总分": 95.0}, "邓淡方": {"总分": 95.0}, "林宇璇": {"总分": 95.0}, "李梓樱": {"总分": 94.5}, "郭晓贤": {"总分": 94.5}, "徐珂": {"总分": 94.5}, "吴文瑞": {"总分": 94.5}, "朱培莉": {"总分": 94.5}, "刘伟凤": {"总分": 94.0}, "王慧婷": {"总分": 94.0}, "薛烨莹": {"总分": 94.0}, "吴泳晓": {"总分": 94.0}, "卢雅燕": {"总分": 94.0}, "杨子琪": {"总分": 94.0}, "钟芷暖": {"总分": 93.5}, "曾洁琳": {"总分": 93.5}, "谢文诗": {"总分": 93.5}, "潘晓敏": {"总分": 93.5}, "李欣淇": {"总分": 93.5}, "黄国英": {"总分": 93.5}, "郑心颖": {"总分": 93.0}, "卓丽美": {"总分": 93.0}, "曾嘉杏": {"总分": 93.0}, "岳应征": {"总分": 93.0}, "郑诗薇": {"总分": 93.0}, "陈家丽": {"总分": 93.0}, "黄晓玲": {"总分": 93.0}, "蔡思锦": {"总分": 92.5}, "黄斯恩": {"总分": 92.5}, "林锶妍": {"总分": 92.0}, "谢浩城": {"总分": 92.0}, "冯汉权": {"总分": 92.0}, "吴佳惠": {"总分": 92.0}, "张晓欣": {"总分": 92.0}, "彭淑蕊": {"总分": 92.0}, "郭展颖": {"总分": 92.0}, "欧宇芳": {"总分": 92.0}, "方敏华": {"总分": 92.0}, "陈雅欣": {"总分": 91.5}, "黎雨晴": {"总分": 91.5}, "杨曜帆": {"总分": 91.0}, "黄培奕": {"总分": 91.0}, "郑晓萍": {"总分": 91.0}, "李亿荧": {"总分": 91.0}, "彭思婉": {"总分": 91.0}, "刘静怡": {"总分": 91.0}, "张颖": {"总分": 90.5}, "谭志河": {"总分": 90.5}, "陈韵": {"总分": 90.0}, "苏旖琪": {"总分": 90.0}, "梁熳": {"总分": 90.0}, "邓晓桐": {"总分": 90.0}, "杨伊镘": {"总分": 90.0}, "何啟志": {"总分": 90.0}, "李梦涵": {"总分": 90.0}, "李琳琳": {"总分": 89.5}, "龚晓欣": {"总分": 89.5}, "谢荣": {"总分": 89.5}, "钟闰秀": {"总分": 89.5}, "李月静": {"总分": 89.5}, "陈玉婷": {"总分": 89.5}, "李静": {"总分": 89.5}, "许文秀": {"总分": 89.0}, "刘雨珊": {"总分": 89.0}, "邹媚敏": {"总分": 89.0}, "张雪茹": {"总分": 89.0}, "陈灿烂": {"总分": 89.0}, "梁明": {"总分": 89.0}, "陈梓涵": {"总分": 89.0}, "黄玮琪": {"总分": 89.0}, "严慧珊": {"总分": 88.5}, "崔春丽": {"总分": 88.5}, "钟伟豪": {"总分": 88.5}, "李烨思": {"总分": 88.5}, "邓荧莹": {"总分": 88.5}, "何嘉怡": {"总分": 88.5}, "覃钰婷": {"总分": 88.5}, "李雍卿": {"总分": 88.5}, "江依婷": {"总分": 88.5}, "邓德涛": {"总分": 88.0}, "何李斌": {"总分": 88.0}, "李鸯": {"总分": 88.0}, "王嘉莹": {"总分": 88.0}, "陈妙煌": {"总分": 88.0}, "李嘉缘": {"总分": 88.0}, "李舒彤": {"总分": 88.0}, "李俊杰": {"总分": 88.0}, "蔡达升": {"总分": 88.0}, "陈君静": {"总分": 88.0}, "蔡佳惠": {"总分": 88.0}, "吴雨婷": {"总分": 87.5}, "魏灿燕": {"总分": 87.5}, "林子宏": {"总分": 87.5}, "王靖怡": {"总分": 87.5}, "冯烨珊": {"总分": 87.5}, "罗慧玲": {"总分": 87.0}, "梁韵怡": {"总分": 87.0}, "梁雅婷": {"总分": 87.0}, "郑浩铃": {"总分": 87.0}, "钟满": {"总分": 87.0}, "黎欣": {"总分": 87.0}, "冯子晴": {"总分": 86.5}, "利颖贤": {"总分": 86.5}, "刘建明": {"总分": 86.5}, "周燕敏": {"总分": 86.5}, "李东妍": {"总分": 86.5}, "张晓婷": {"总分": 86.0}, "丘美婷": {"总分": 86.0}, "陈虹婷": {"总分": 85.5}, "林泽珍": {"总分": 85.5}, "刘彩霞": {"总分": 85.5}, "杨柳": {"总分": 85.5}, "杨景坤": {"总分": 85.5}, "梁雨轩": {"总分": 85.5}, "李煌": {"总分": 85.0}, "李治旋": {"总分": 85.0}, "吴晓杰": {"总分": 85.0}, "李美琪": {"总分": 85.0}, "娄慧": {"总分": 85.0}, "龙可欣": {"总分": 84.5}, "吴芷慧": {"总分": 84.5}, "张利源": {"总分": 84.5}, "林舒妍": {"总分": 84.5}, "曾敏丽": {"总分": 84.5}, "张秀银": {"总分": 84.0}, "吴栩琳": {"总分": 84.0}, "魏小美": {"总分": 84.0}, "鲁娜": {"总分": 84.0}, "雷雅雯": {"总分": 84.0}, "曾忠平": {"总分": 84.0}, "郑文杰": {"总分": 83.5}, "郑晓洁": {"总分": 83.5}, "潘家恒": {"总分": 83.5}, "杨怡": {"总分": 83.5}, "郑华恒": {"总分": 83.0}, "蓝煜宗": {"总分": 83.0}, "温烷鸿": {"总分": 83.0}, "佘孙燕": {"总分": 82.5}, "陆月倩": {"总分": 82.5}, "李宇琳": {"总分": 82.5}, "江艺璇": {"总分": 82.5}, "刘雯菲": {"总分": 82.0}, "杨时婉": {"总分": 82.0}, "林梓婷": {"总分": 82.0}, "陈浩漫": {"总分": 81.5}, "符智慧": {"总分": 81.5}, "李春静": {"总分": 81.5}, "吴柏贤": {"总分": 81.5}, "杨金弟": {"总分": 81.0}, "陈柏丞": {"总分": 81.0}, "陈昱任": {"总分": 81.0}, "温佳洪": {"总分": 80.5}, "李木培": {"总分": 80.5}, "钟梓欣": {"总分": 80.5}, "张佳钰": {"总分": 80.5}, "赖锦媚": {"总分": 80.5}, "杨童": {"总分": 80.5}, "邓耀文": {"总分": 80.5}, "黄露容": {"总分": 80.0}, "方维雪": {"总分": 80.0}, "查窈茜": {"总分": 80.0}, "李少璇": {"总分": 80.0}, "赖忆心": {"总分": 80.0}, "彭佳祺": {"总分": 80.0}, "蔡冰芯": {"总分": 80.0}, "肖玉叶": {"总分": 79.5}, "林英格": {"总分": 79.5}, "魏银仪": {"总分": 79.5}, "沈秋烨": {"总分": 79.5}, "黄桂鑫": {"总分": 79.5}, "陈昭敏": {"总分": 79.5}, "陈璟纯": {"总分": 79.5}, "孙晓强": {"总分": 79.0}, "高丹炀": {"总分": 79.0}, "钟秉延": {"总分": 79.0}, "陈建美": {"总分": 79.0}, "唐诗盈": {"总分": 79.0}, "梁家许": {"总分": 79.0}, "黄晴灿": {"总分": 79.0}, "伍绍允": {"总分": 78.5}, "陈桃鑫": {"总分": 78.5}, "蔡小慧": {"总分": 78.5}, "赵雅轩": {"总分": 78.5}, "余志豪": {"总分": 78.5}, "魏宝燕": {"总分": 78.5}, "张筱萍": {"总分": 78.0}, "林佳欣": {"总分": 78.0}, "赖文杰": {"总分": 78.0}, "黄文亮": {"总分": 78.0}, "劳智丽": {"总分": 78.0}, "谢子营": {"总分": 78.0}, "王文": {"总分": 78.0}, "李晓贞": {"总分": 77.5}, "王春井": {"总分": 77.5}, "邓秋香": {"总分": 77.5}, "陈嘉熙": {"总分": 77.5}, "连芳": {"总分": 77.0}, "戴海强": {"总分": 77.0}, "丘文萍": {"总分": 76.5}, "卞紫怡": {"总分": 76.5}, "陈凤霞": {"总分": 76.5}, "赵春燕": {"总分": 76.5}, "陈彦钰": {"总分": 76.5}, "张若琳": {"总分": 76.0}, "黄冰霞": {"总分": 76.0}, "张欣媚": {"总分": 76.0}, "黄燕妮": {"总分": 75.5}, "谢悦怡": {"总分": 75.5}, "王晓婷": {"总分": 75.5}, "黄榕": {"总分": 75.0}, "李凤敏": {"总分": 75.0}, "林镇晖": {"总分": 74.5}, "管庆杰": {"总分": 74.5}, "刘金沂": {"总分": 74.5}, "邹海": {"总分": 74.5}, "罗婷珍": {"总分": 74.5}, "何奇锋": {"总分": 74.5}, "杨冬婷": {"总分": 74.0}, "许雪婷": {"总分": 74.0}, "沈利": {"总分": 74.0}, "何珊": {"总分": 74.0}, "张琳": {"总分": 74.0}, "覃子倩": {"总分": 73.5}, "魏佳琪": {"总分": 73.5}, "周燕霞": {"总分": 73.0}, "韩家豪": {"总分": 72.5}, "钟梦婷": {"总分": 72.0}, "梁晓文": {"总分": 72.0}, "李思依": {"总分": 71.5}, "郑桂贤": {"总分": 71.5}, "陈佳伟": {"总分": 71.5}, "刘思琪": {"总分": 0.0}, "陈可": {"总分": 71.5}, "黄妙婷": {"总分": 71.0}, "李媛": {"总分": 71.0}, "叶建希": {"总分": 71.0}, "张紫珊": {"总分": 71.0}, "詹晓纯": {"总分": 71.0}, "卓佳芳": {"总分": 71.0}, "邱钰婷": {"总分": 70.5}, "张婷玉": {"总分": 70.0}, "林素平": {"总分": 69.5}, "汤佩莹": {"总分": 69.5}, "高恒": {"总分": 69.5}, "罗雅媛": {"总分": 69.5}, "马泽林": {"总分": 68.5}, "黄晓云": {"总分": 68.5}, "张婷纯": {"总分": 68.0}, "冯美玲": {"总分": 67.0}, "陈秋芬": {"总分": 67.0}, "党华炎": {"总分": 66.5}, "蔡雪城": {"总分": 66.5}, "林紫苑": {"总分": 66.5}, "刘丽": {"总分": 65.5}, "郭戊晏": {"总分": 65.0}, "莫慧婷": {"总分": 64.5}, "梁宝仪": {"总分": 64.5}, "余健泳": {"总分": 63.5}, "黄诗琪": {"总分": 63.0}, "林静君": {"总分": 62.5}, "薛文凤": {"总分": 62.5}, "陈伟红": {"总分": 62.5}, "陈志全": {"总分": 61.5}, "刁丽琳": {"总分": 61.0}, "黄婷": {"总分": 61.0}, "刘霖": {"总分": 61.0}, "观子瑜": {"总分": 61.0}, "严彩丹": {"总分": 60.5}, "王家琪": {"总分": 60.0}, "夏诗淇": {"总分": 60.0}, "郭信江": {"总分": 58.5}, "程晓琪": {"总分": 58.0}, "蔡家城": {"总分": 58.0}, "邓雯怡": {"总分": 56.0}, "温丽娴": {"总分": 54.5}, "叶诗雅": {"总分": 54.0}, "温宝珠": {"总分": 50.5}, "李慧云": {"总分": 50.5}, "叶鸿建": {"总分": 48.5}, "钟美琪": {"总分": 48.0}, "李洁": {"总分": 48.0}, "洪佳佳": {"总分": 47.0}, "庄静镁": {"总分": 46.5}, "祝玉连": {"总分": 46.0}, "廖咏诗": {"总分": 45.0}, "郑苗璇": {"总分": 41.0}, "谢晓珊": {"总分": 41.0}, "欧阳莉": {"总分": 39.0}, "黄婷婷": {"总分": 39.0}, "何绮泳": {"总分": 37.5}, "周茉": {"总分": 34.5}, "刘茜瑶": {"总分": 34.5}, "冼鑫锐": {"总分": 31.5}, "黄茂棋": {"总分": 29.5}, "蔡晓璇": {"总分": 26.0}, "廖铱悦": {"总分": 25.0}, "詹家炜": {"总分": 14.0}, "余颖诗": {"总分": 13.0}, "严建鑫": {"总分": 5.0}, "谢泽君": {"总分": 5.0}, "潘俊丞": {"总分": 4.0}, "林倩茹": {"总分": 4.0}, "陈佳颖": {"总分": 0.0}, "刘耿冰": {"总分": 0.0}, "黄珊": {"总分": 0.0}, "陈舜壕": {"总分": 0.0}, "郭斌": {"总分": 0.0}, "凌怡莉": {"总分": 0.0}, "邬裕欢": {"总分": 0.0}, "蒙之贤": {"总分": 0.0}, "林奕彤": {"总分": 0.0}, "叶林钰": {"总分": 0.0}, "吴文信": {"总分": 0.0}, "翁铱祺": {"总分": 0.0}, "林思博": {"总分": 0.0}, "吴金婉": {"总分": 0.0}, "李春玲": {"总分": 0.0}, "凌超强": {"总分": 0.0}, "陈心茹": {"总分": 0.0}, "马家利": {"总分": 0.0}, "张瑞楠": {"总分": 0.0}, "何明熙": {"总分": 0.0}, "刘锐鑫": {"总分": 0.0}, "林雅婷": {"总分": 0.0}, "吕诗璇": {"总分": 0.0}, "叶静茹": {"总分": 0.0}, "张诗洁": {"总分": 0.0}, "胡瑞添": {"总分": 0.0}, "游丽玲": {"总分": 0.0}, "黄能锐": {"总分": 0.0}, "许佳纯": {"总分": 0.0}};
-            
-            function checkScore() {
-                const name = document.getElementById('nameInput').value.trim();
-                const result = document.getElementById('result');
-                
-                if (!name) {
-                    result.innerHTML = '<div class="error-message">请输入学生姓名</div>';
-                    return;
-                }
-                
-                if (name in studentsData) {
-                    const student = studentsData[name];
-                    result.innerHTML = `
-                        <div class="result-box">
-                            <p><strong>姓名:</strong> ${name}</p>
-                            <p><strong>成绩:</strong> ${student.总分.toFixed(2)}</p>
-                        </div>
-                    `;
-                } else {
-                    result.innerHTML = '<div class="error-message">未找到该学生信息</div>';
-                }
-            }
+        }
 
-            document.getElementById('nameInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkScore();
-                }
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            animation: confettiFall 4s linear forwards;
+            z-index: 1;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .balloon {
+            position: fixed;
+            animation: balloonFloat 10s linear infinite;
+            z-index: 1;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+
+        @keyframes balloonFloat {
+            0% {
+                transform: translate(-100%, 100vh) rotate(-10deg);
+            }
+            50% {
+                transform: translate(50vw, 50vh) rotate(10deg);
+            }
+            100% {
+                transform: translate(100vw, -100%) rotate(-10deg);
+            }
+        }
+
+        .title.typewriter, .name.typewriter, .message.typewriter {
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="gradient-bg"></div>
+        <div class="particles" id="particles"></div>
+        <div class="birthday-card" id="birthdayCard">
+            <h1 class="title typewriter">Happy Birthday</h1>
+            <h2 class="name typewriter" style="display: none">姚狗子</h2>
+            <p class="message" id="birthdayMessage" style="display: none">
+                🎉 愿你的生日充满欢乐和惊喜
+                ✨ 每一刻都闪耀着幸福的光芒 ✨
+                🌟 愿你的人生像一场精彩冒险
+                每一步都是未知的惊喜与可能
+                🌻 永远保持对生活的热爱——
+                用好奇心探索世界 🌍 用勇气追逐梦想 💫
+                🔥 心中有光 照亮前行之路
+                💪 手中有力量 拥抱每一个挑战
+                🚀 未来比星辰更耀眼 ✨ 比大海更广阔 🌊
+                🎂 特别的日子送上特别的祝福：
+                🎂 生 日 快 乐 🎂 </p>
+        </div>
+    </div>
+
+    <audio id="bgMusic" preload="auto" style="display:none">
+        <source src="生日祝福歌.mp3" type="audio/mpeg">
+        <source src="生日祝福歌.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        // 创建粒子效果
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            const colors = ['#FF3366', '#6C63FF', '#FFD700', '#4CAF50', '#E91E63'];
+            
+            for(let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 20 + 10;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.background = color;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.opacity = Math.random() * 0.6 + 0.2;
+                particle.style.animationDelay = `${Math.random() * 4}s`;
+                
+                particles.appendChild(particle);
+            }
+        }
+
+        // 创建点击效果
+        function createClickEffect(e) {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            effect.style.left = e.clientX - 50 + 'px';
+            effect.style.top = e.clientY - 50 + 'px';
+            effect.style.background = `radial-gradient(circle, ${getRandomColor()} 0%, transparent 70%)`;
+            document.body.appendChild(effect);
+
+            setTimeout(() => {
+                effect.remove();
+            }, 500);
+        }
+
+        // 创建表情雨
+        function createEmojiRain() {
+            const emojis = ['🎂', '🎉', '🎈', '🎊', '✨', '🎆', '🎇', '🎁'];
+            for(let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'emoji-rain';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = Math.random() * 100 + 'vw';
+                    emoji.style.fontSize = Math.random() * 20 + 20 + 'px';
+                    document.body.appendChild(emoji);
+
+                    setTimeout(() => {
+                        emoji.remove();
+                    }, 3000);
+                }, i * 150);
+            }
+        }
+
+        function getRandomColor() {
+            const colors = ['#FF3366', '#6C63FF', '#FFD700', '#4CAF50', '#E91E63'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+
+        // 卡片交互
+        const card = document.getElementById('birthdayCard');
+        const gradientBg = document.querySelector('.gradient-bg');
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const angleX = (y - centerY) / 30;
+            const angleY = (centerX - x) / 30;
+            
+            card.style.transform = `translate(-50%, -50%) rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+            gradientBg.style.opacity = 0.1 + Math.abs(angleX + angleY) / 50;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translate(-50%, -50%)';
+            gradientBg.style.opacity = 0.1;
+        });
+
+        // 3D视差效果
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.querySelectorAll('.particle');
+            
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            
+            particles.forEach(particle => {
+                const speed = particle.offsetWidth / 30;
+                particle.style.transform = `translate(${xAxis * speed}px, ${yAxis * speed}px)`;
             });
-        </script>
-    </body>
-    </html>
-    
+        });
+
+        // 初始化
+        createParticles();
+
+        // 创建彩带效果
+        function createConfetti() {
+            const colors = ['#FF3366', '#6C63FF', '#FFD700', '#4CAF50', '#E91E63', '#FFA500', '#00CED1'];
+            const shapes = ['★', '♦', '♠', '♥', '♣', '●', '■', '✦'];
+            
+            for(let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.fontSize = Math.random() * 15 + 10 + 'px';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 200);
+            }
+        }
+
+        // 创建气球效果
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.textContent = '🎈';
+            balloon.style.fontSize = Math.random() * 30 + 30 + 'px';
+            document.body.appendChild(balloon);
+            
+            setTimeout(() => balloon.remove(), 10000);
+        }
+
+        // 修改音乐自动播放逻辑
+        window.addEventListener('load', async function() {
+            const audio = document.getElementById('bgMusic');
+            const title = document.querySelector('.title');
+            const name = document.querySelector('.name');
+            const message = document.getElementById('birthdayMessage');
+            
+            // 添加点击启动层
+            const clickStarter = document.createElement('div');
+            clickStarter.style.position = 'fixed';
+            clickStarter.style.width = '100%';
+            clickStarter.style.height = '100%';
+            clickStarter.style.background = 'rgba(0,0,0,0.5)';
+            clickStarter.style.zIndex = '999';
+            clickStarter.style.display = 'flex';
+            clickStarter.style.alignItems = 'center';
+            clickStarter.style.justifyContent = 'center';
+            clickStarter.style.cursor = 'pointer';
+            clickStarter.innerHTML = `
+                <div style="text-align: center; animation: pulse 2s infinite">
+                    <div style="font-size: 3em; margin-bottom: 20px">🎁</div>
+                    <div style="font-size: 1.5em">点击开启生日惊喜</div>
+                </div>
+            `;
+            document.body.appendChild(clickStarter);
+
+            // 点击启动处理
+            clickStarter.addEventListener('click', async function() {
+                this.style.display = 'none';
+                
+                // 预加载音频
+                audio.volume = 0.3;
+                
+                // 尝试播放音乐
+                try {
+                    await audio.play();
+                } catch (error) {
+                    console.log("等待用户交互后播放音乐");
+                    document.addEventListener('click', () => {
+                        audio.play().catch(console.error);
+                    }, { once: true });
+                }
+                
+                // 创建初始效果
+                createParticles();
+                
+                // 显示标题
+                title.style.display = 'block';
+                title.textContent = '';
+                await new Promise(resolve => {
+                    let text = "Happy Birthday";
+                    let i = 0;
+                    function typeTitle() {
+                        if (i < text.length) {
+                            title.textContent += text[i];
+                            i++;
+                            setTimeout(typeTitle, 100);
+                        } else {
+                            resolve();
+                        }
+                    }
+                    typeTitle();
+                });
+                
+                // 显示名字
+                await new Promise(resolve => setTimeout(resolve, 500));
+                name.style.display = 'block';
+                name.textContent = '';
+                await new Promise(resolve => {
+                    let text = "姚狗子";
+                    let i = 0;
+                    function typeName() {
+                        if (i < text.length) {
+                            name.textContent += text[i];
+                            i++;
+                            setTimeout(typeName, 150);
+                        } else {
+                            resolve();
+                        }
+                    }
+                    typeName();
+                });
+                
+                // 显示消息
+                await new Promise(resolve => setTimeout(resolve, 500));
+                message.style.display = 'block';
+                message.textContent = '';
+                const messages = [
+                    "🎉 愿你的生日充满欢乐和惊喜",
+                    "✨ 每一刻都闪耀着幸福的光芒 ✨",
+                    "🌟 愿你的人生像一场精彩冒险",
+                    "  每一步都是未知的惊喜与可能",
+                    "🌻 永远保持对生活的热爱——",
+                    "  用好奇心探索世界 🌍 用勇气追逐梦想 💫",
+                    "🔥 心中有光 照亮前行之路",
+                    "💪 手中有力量 拥抱每一个挑战",
+                    "🚀 未来比星辰更耀眼 ✨ 比大海更广阔 🌊",
+                    "🎂 特别的日子送上特别的祝福：",
+                    " 🎂 生 日 快 乐 🎂 "
+                ];
+                
+                for (let i = 0; i < messages.length; i++) {
+                    if (i > 0) {
+                        message.textContent += '\n';
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                    }
+                    let j = 0;
+                    await new Promise(resolve => {
+                        function typeMessage() {
+                            if (j < messages[i].length) {
+                                message.textContent += messages[i][j];
+                                j++;
+                                setTimeout(typeMessage, 50);
+                            } else {
+                                resolve();
+                            }
+                        }
+                        typeMessage();
+                    });
+                }
+                
+                // 开始循环动画
+                createConfetti();
+                createBalloon();
+                createEmojiRain();
+                
+                // 设置定时器
+                setInterval(createConfetti, 3000);
+                setInterval(createBalloon, 5000);
+                setInterval(createEmojiRain, 8000);
+            });
+
+            // 添加脉冲动画
+            document.styleSheets[0].insertRule(`
+                @keyframes pulse {
+                    0% { transform: scale(1); opacity: 0.8; }
+                    50% { transform: scale(1.1); opacity: 1; }
+                    100% { transform: scale(1); opacity: 0.8; }
+                }
+            `, 0);
+        });
+
+        // 优化背景动画
+        function updateGradient() {
+            const gradientBg = document.querySelector('.gradient-bg');
+            let hue = 0;
+            
+            setInterval(() => {
+                hue = (hue + 1) % 360;
+                gradientBg.style.background = `
+                    radial-gradient(circle at center,
+                        rgba(26, 26, 46, 0.8) 0%,
+                        hsla(${hue}, 70%, 60%, 0.2) 50%,
+                        hsla(${(hue + 180) % 360}, 70%, 60%, 0.2) 100%
+                    )
+                `;
+            }, 100);
+        }
+
+        updateGradient();
+    </script>
+</body>
+</html>
+
+
+
+
